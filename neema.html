@@ -1,0 +1,59 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <title>login|form</title>
+  <style type="text/css">
+    h2{
+      margin-left: 500px;
+    }
+    fieldset{
+      width: 150px;
+      height: 250px; 
+      border-radius: 8px;
+      margin-left: 450px;
+      background-color: goldenrod;
+    }
+    input[type=submit]{
+      margin-left: 60px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Login Form</h2>
+  <fieldset>
+  <form id="myForm" onsubmit="validateForm(event)">
+    <label for="fname">First Name:</label><br>
+    <input type="text" id="fname" name="First Name"><br><br>
+
+    <label for="lname">Last Name:</label><br>
+    <input type="text" id="lname" name="Last Name"><br><br>
+
+    <label for="email">Email:</label><br>
+    <input type="text" id="email" name="Email"><br><br>
+
+    <input type="submit" value="Submit">
+  </form></fieldset>
+
+    <script>
+    function validateForm(event) {
+      event.preventDefault();
+      const inputs = document.querySelectorAll('input[type="text"]');
+      let valid = true;
+
+      for (let i = 0; i < inputs.length; i++) {
+
+        if (inputs[i].value.trim() === "") {
+          alert("Please fill in the field: " + inputs[i].name);
+          inputs[i].focus();
+          valid = false;
+          break;
+        }
+      }
+
+      if (valid) {
+        alert("Form submitted successfully!");
+      }
+    }
+  </script>
+</body>
+</html>
