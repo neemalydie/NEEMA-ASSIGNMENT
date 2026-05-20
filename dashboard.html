@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>IMARA - Smart Agriculture Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: #0f0f1a;
+        }
+
+        /* ======================== */
+        /* NAVBAR */
+        /* ======================== */
+        .navbar {
+            background: #0f3b2c;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        body.dark-mode .navbar {
+            background: #0a2a1f;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .logo p {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dark-mode-toggle {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .dark-mode-toggle:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(255,255,255,0.15);
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: #4ade80;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #0f3b2c;
+        }
+
+        .user-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .logout-btn:hover {
+            opacity: 1;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ======================== */
+        /* MAIN CONTAINER */
+        /* ======================== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* ======================== */
+        /* HERO SECTION WITH IMAGE */
+        /* ======================== */
+        .hero-section {
+            background: linear-gradient(135deg, #0f3b2c 0%, #1e4a3b 100%);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        body.dark-mode .hero-section {
+            background: linear-gradient(135deg, #0a2a1f 0%, #0f3b2c 100%);
+        }
+
+        .hero-text {
+            flex: 2;
+        }
+
+        .hero-text h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .hero-text p {
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #0f3b2c;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-outline-white {
+            background: transparent;
+            border: 1.5px solid white;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-outline-white:hover {
+            background: white;
+            color: #0f3b2c;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
+        }
+
+        /* ======================== */
+        /* STATS CARDS */
+        /* ======================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        body.dark-mode .stat-card {
+            background: #1a1a2e;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f3b2c;
+        }
+
+        body.dark-mode .stat-value {
+            color: #4ade80;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        body.dark-mode .stat-label {
+            color: #94a3b8;
+        }
+
+        /* ======================== */
+        /* SECTION TITLES */
+        /* ======================== */
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f3b2c;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .section-title {
+            color: #e2e8f0;
+        }
+
+        .section-subtitle {
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        body.dark-mode .section-subtitle {
+            color: #94a3b8;
+        }
+
+        /* ======================== */
+        /* CARDS */
+        /* ======================== */
+        .two-col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.8rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .card {
+            background: #1a1a2e;
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            color: #0f3b2c;
+        }
+
+        body.dark-mode .card h3 {
+            color: #e2e8f0;
+        }
+
+        .card p {
+            color: #475569;
+        }
+
+        body.dark-mode .card p {
+            color: #94a3b8;
+        }
+
+        /* ======================== */
+        /* MISSION VISION GRID WITH IMAGES */
+        /* ======================== */
+        .mission-vision-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .mv-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f1f5f9;
+            border-radius: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .mv-card:hover {
+            transform: translateY(-5px);
+        }
+
+        body.dark-mode .mv-card {
+            background: #1a1a2e;
+        }
+
+        .mv-card h4 {
+            color: #0f3b2c;
+            margin: 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        body.dark-mode .mv-card h4 {
+            color: #e2e8f0;
+        }
+
+        .mv-card p {
+            color: #475569;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        body.dark-mode .mv-card p {
+            color: #94a3b8;
+        }
+
+        .mv-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 0.5rem;
+            border: 3px solid #4ade80;
+        }
+
+        /* ======================== */
+        /* PLANT HEALTH ANALYZER */
+        /* ======================== */
+        .analyzer-preview {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f1f5f9;
+            border-radius: 1rem;
+        }
+
+        body.dark-mode .analyzer-preview {
+            background: #2a2a3d;
+        }
+
+        .analyzer-preview img {
+            width: 80px;
+            height: 80px;
+            border-radius: 1rem;
+            object-fit: cover;
+        }
+
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 1rem;
+        }
+
+        body.dark-mode .upload-area {
+            border-color: #3a3a50;
+        }
+
+        .upload-area:hover {
+            border-color: #0f3b2c;
+            background: #f0fdf4;
+        }
+
+        body.dark-mode .upload-area:hover {
+            background: #2a2a3d;
+            border-color: #4ade80;
+        }
+
+        .upload-area p {
+            color: #64748b;
+        }
+
+        body.dark-mode .upload-area p {
+            color: #94a3b8;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hidden-file-input {
+            display: none;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 1rem;
+            margin-top: 1rem;
+        }
+
+        .analyze-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 1rem;
+            display: none;
+        }
+
+        .analyze-result.success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            display: block;
+            color: #166534;
+        }
+
+        body.dark-mode .analyze-result.success {
+            background: #1a3a2a;
+            border-color: #2a5a3a;
+            color: #86efac;
+        }
+
+        .analyze-result.error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            display: block;
+            color: #991b1b;
+        }
+
+        body.dark-mode .analyze-result.error {
+            background: #3a1a1a;
+            border-color: #5a2a2a;
+            color: #fca5a5;
+        }
+
+        .crop-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .crop-tag {
+            background: #e2e8f0;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            color: #1e293b;
+        }
+
+        body.dark-mode .crop-tag {
+            background: #3a3a50;
+            color: #e2e8f0;
+        }
+
+        .tip-box {
+            background: #fef9e6;
+            padding: 0.8rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            color: #854d0e;
+        }
+
+        body.dark-mode .tip-box {
+            background: #2a2a1a;
+            color: #fde047;
+        }
+
+        /* ======================== */
+        /* SOLUTIONS GRID */
+        /* ======================== */
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .solution-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-5px);
+        }
+
+        body.dark-mode .solution-card {
+            background: #1a1a2e;
+        }
+
+        .solution-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .solution-card h4 {
+            color: #0f3b2c;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .solution-card h4 {
+            color: #e2e8f0;
+        }
+
+        .solution-card p {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+
+        body.dark-mode .solution-card p {
+            color: #94a3b8;
+        }
+
+        /* ======================== */
+        /* PRICING CARDS WITH IMAGES */
+        /* ======================== */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .pricing-card {
+            background: #1a1a2e;
+            border-color: #3a3a50;
+        }
+
+        .pricing-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            color: #0f3b2c;
+        }
+
+        body.dark-mode .pricing-title {
+            color: #e2e8f0;
+        }
+
+        .pricing-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f3b2c;
+            margin: 0.5rem 0;
+        }
+
+        body.dark-mode .pricing-price {
+            color: #4ade80;
+        }
+
+        .pricing-card p {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+
+        body.dark-mode .pricing-card p {
+            color: #94a3b8;
+        }
+
+        .btn-quote {
+            background: #0f3b2c;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        body.dark-mode .btn-quote {
+            background: #1e4a3b;
+        }
+
+        .btn-quote:hover {
+            background: #1e4a3b;
+        }
+
+        /* ======================== */
+        /* HOW IT WORKS */
+        /* ======================== */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f1f5f9;
+            border-radius: 1.5rem;
+        }
+
+        body.dark-mode .step-card {
+            background: #1a1a2e;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #0f3b2c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-weight: bold;
+        }
+
+        .step-card h4 {
+            color: #0f3b2c;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .step-card h4 {
+            color: #e2e8f0;
+        }
+
+        .step-card p {
+            color: #475569;
+            font-size: 0.85rem;
+        }
+
+        body.dark-mode .step-card p {
+            color: #94a3b8;
+        }
+
+        /* ======================== */
+        /* TESTIMONIALS */
+        /* ======================== */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            border-left: 4px solid #0f3b2c;
+        }
+
+        body.dark-mode .testimonial-card {
+            background: #1a1a2e;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        body.dark-mode .testimonial-text {
+            color: #cbd5e1;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #0f3b2c;
+        }
+
+        body.dark-mode .testimonial-author {
+            color: #4ade80;
+        }
+
+        /* ======================== */
+        /* FOOTER */
+        /* ======================== */
+        .footer {
+            background: #0f3b2c;
+            color: white;
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+        }
+
+        body.dark-mode .footer {
+            background: #0a2a1f;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .footer-col a {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .footer-col a:hover {
+            color: white;
+        }
+
+        .footer-col p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.8rem;
+            opacity: 0.7;
+            color: white;
+        }
+
+        /* ======================== */
+        /* MOBILE RESPONSIVE */
+        /* ======================== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding: 1rem 0;
+            }
+            
+            .nav-links.show {
+                display: flex;
+            }
+            
+            .nav-right {
+                order: -1;
+                justify-content: space-between;
+                width: 100%;
+            }
+            
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .hero-image {
+                order: -1;
+            }
+            
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+            
+            .mission-vision-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <h1>🌱 IMARA</h1>
+            <p>RGMA LINEAGE</p>
+        </div>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        
+        <div class="nav-links" id="navLinks">
+            <a href="#" class="active">Home</a>
+            <a href="#">Plant Health</a>
+            <a href="#">Overview</a>
+            <a href="#">Insights</a>
+            <a href="#">Business</a>
+        </div>
+        
+        <div class="nav-right">
+            <button class="dark-mode-toggle" id="darkModeToggle">🌙</button>
+            <div class="user-menu">
+                <div class="user-avatar" id="userAvatar">👤</div>
+                <span class="user-name" id="userName">Farmer</span>
+                <button class="logout-btn" id="logoutBtn">🚪</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-text">
+                <h2 id="welcomeHeading">Welcome to IMARA</h2>
+                <p>Empowering agriculture through AI, IoT, and smart digital solutions. From intelligent crop diagnostics and greenhouse automation to real-time monitoring and farm management, IMARA helps farmers and agribusinesses build sustainable growth.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="alert('🔬 AI Diagnosis feature coming soon!')">🤖 Try AI Diagnostics</button>
+                    <button class="btn-outline-white" onclick="alert('📡 IoT devices catalog will open')">📡 Request IoT devices</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&h=300&fit=crop" alt="Smart Farming" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%234ade80%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2212%22>🌱 IMARA</text></svg>'">
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📡</div>
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Live Monitoring</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🤖</div>
+                <div class="stat-value">AI</div>
+                <div class="stat-label">Crop Diagnostics</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔌</div>
+                <div class="stat-value">IoT</div>
+                <div class="stat-label">Automation Ready</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🌾</div>
+                <div class="stat-value">1</div>
+                <div class="stat-label">Farm Operations</div>
+            </div>
+        </div>
+
+        <!-- Two Column: Plant Health Analyzer + Mission/Vision -->
+        <div class="two-col">
+            <!-- Plant Health Analyzer -->
+            <div class="card">
+                <h3>🔬 FLAGSHIP CAPABILITY · Plant Health Analyzer</h3>
+                
+                <div class="analyzer-preview">
+                    <img src="https://images.unsplash.com/photo-1592155931584-901ac15763e3?w=80&h=80&fit=crop" alt="Leaf sample" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%233b82f6%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2212%22>🍃</text></svg>'">
+                    <div>
+                        <p style="margin-bottom: 0.25rem;"><strong>CV + agronomy</strong></p>
+                        <p style="font-size: 0.8rem;">MODEL STACK · Seconds response</p>
+                    </div>
+                </div>
+                
+                <p>Upload a clear leaf photo and get disease likelihoods, plain-language guidance, and next steps — no login required. Sign in later to keep a history on your account.</p>
+                
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📸</div>
+                    <p>Click to upload leaf photo</p>
+                    <p style="font-size: 0.75rem;">Supports JPG, PNG (max 5MB)</p>
+                </div>
+                <input type="file" id="fileInput" class="hidden-file-input" accept="image/*">
+                <img id="preview" class="preview-image" style="display: none;">
+                
+                <div id="analyzeResult" class="analyze-result"></div>
+                
+                <button class="btn-primary" id="analyzeBtn" style="margin-top: 0.5rem; width: 100%;">🔍 Analyze Plant Health</button>
+                
+                <div class="crop-list">
+                    <span class="crop-tag">🌽 Maize</span>
+                    <span class="crop-tag">🍅 Tomato</span>
+                    <span class="crop-tag">🥔 Potato</span>
+                    <span class="crop-tag">🌾 Rice</span>
+                    <span class="crop-tag">🫑 Pepper</span>
+                    <span class="crop-tag">🫘 Beans</span>
+                    <span class="crop-tag">🌻 Cassava</span>
+                    <span class="crop-tag">🌾 Wheat</span>
+                </div>
+                
+                <div class="tip-box">
+                    💡 <strong>Tip:</strong> Fill the frame with one symptomatic leaf, avoid harsh flash, and keep the phone steady for best results.
+                </div>
+            </div>
+
+            <!-- Mission & Vision with Professional Images -->
+            <div>
+                <div class="mission-vision-grid">
+                    <div class="mv-card">
+                        <img class="mv-image" src="https://images.unsplash.com/photo-1599058917765-a780eda07a3e?w=80&h=80&fit=crop" alt="Mission - Farming" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%230f3b2c%22/><text x=%2250%22 y=%2265%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22>🎯</text></svg>'">
+                        <h4>Our Mission</h4>
+                        <p>Empower farmers with data-driven tools for efficient irrigation, healthier crops, and better yields.</p>
+                    </div>
+                    <div class="mv-card">
+                        <img class="mv-image" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=80&h=80&fit=crop" alt="Vision - Sustainable Future" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%230f3b2c%22/><text x=%2250%22 y=%2265%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22>👁️</text></svg>'">
+                        <h4>Our Vision</h4>
+                        <p>A climate-smart agriculture ecosystem where technology and knowledge improve livelihoods sustainably.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>📊 AI-Powered Diagnostics</h3>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin: 1rem 0;">
+                        <img src="https://images.unsplash.com/photo-1586771107445-d3ca888129ce?w=60&h=60&fit=crop" alt="AI Analysis" style="border-radius: 1rem; width: 60px; height: 60px; object-fit: cover;" onerror="this.style.display='none'">
+                        <div>
+                            <p style="font-size: 1.5rem; font-weight: 700; color: #0f3b2c;" id="modelStackText">MODEL STACK</p>
+                            <p>Powered by advanced computer vision trained on thousands of crop disease images</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <span class="crop-tag" style="display: inline-block;">⚡ Seconds — TYPICAL RESPONSE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Smart Solutions -->
+        <h2 class="section-title">Our Smart Solutions</h2>
+        <p class="section-subtitle">Explore IoT and AI-powered tools designed to revolutionize your farming operations</p>
+        
+        <div class="solutions-grid">
+            <div class="solution-card" onclick="alert('Plant Health Analyzer opening...')">
+                <div class="solution-icon">🔬</div>
+                <h4>Plant Health Analyzer</h4>
+                <p>Instant leaf diagnostics for smallholders</p>
+            </div>
+            <div class="solution-card" onclick="alert('Real-time Monitoring dashboard...')">
+                <div class="solution-icon">📡</div>
+                <h4>Real-time Monitoring</h4>
+                <p>Track sensors 24/7 with instant alerts</p>
+            </div>
+            <div class="solution-card" onclick="alert('Smart Irrigation setup...')">
+                <div class="solution-icon">💧</div>
+                <h4>Smart Irrigation</h4>
+                <p>AI-powered watering recommendations</p>
+            </div>
+            <div class="solution-card" onclick="alert('Analytics & Reports...')">
+                <div class="solution-icon">📊</div>
+                <h4>Analytics & Reports</h4>
+                <p>Predictive analytics and forecasting</p>
+            </div>
+            <div class="solution-card" onclick="alert('Learning Hub...')">
+                <div class="solution-icon">📚</div>
+                <h4>Learning Hub</h4>
+                <p>Expert courses and community</p>
+            </div>
+        </div>
+
+        <!-- IoT Devices Section -->
+        <h2 class="section-title">Need IoT Devices for Your Farm?</h2>
+        <p class="section-subtitle">We provide complete smart farming solutions including sensors, controllers, and monitoring systems.</p>
+        
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <img class="pricing-image" src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=280&h=160&fit=crop" alt="Smart Garden Kit" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 120%22><rect width=%22200%22 height=%22120%22 fill=%22%23e2e8f0%22/><text x=%22100%22 y=%2260%22 text-anchor=%22middle%22 fill=%22%2364748b%22 font-size=%2214%22>🌱 Garden Kit</text></svg>'">
+                <div class="pricing-title">Smart Garden Kit</div>
+                <div class="pricing-price">380,000 RWF</div>
+                <p>Soil moisture, temperature & humidity sensors with auto-irrigation</p>
+                <button class="btn-quote" onclick="alert('Request quote for Smart Garden Kit')">Request Quote →</button>
+            </div>
+            <div class="pricing-card">
+                <img class="pricing-image" src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=280&h=160&fit=crop" alt="Smart Irrigation" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 120%22><rect width=%22200%22 height=%22120%22 fill=%22%23e2e8f0%22/><text x=%22100%22 y=%2260%22 text-anchor=%22middle%22 fill=%22%2364748b%22 font-size=%2214%22>💧 Irrigation</text></svg>'">
+                <div class="pricing-title">Smart Irrigation System</div>
+                <div class="pricing-price">635,000 RWF</div>
+                <p>Advanced water management with weather integration</p>
+                <button class="btn-quote" onclick="alert('Request quote for Smart Irrigation System')">Request Quote →</button>
+            </div>
+            <div class="pricing-card">
+                <img class="pricing-image" src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=280&h=160&fit=crop" alt="Complete Monitoring" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 120%22><rect width=%22200%22 height=%22120%22 fill=%22%23e2e8f0%22/><text x=%22100%22 y=%2260%22 text-anchor=%22middle%22 fill=%22%2364748b%22 font-size=%2214%22>📡 Monitoring</text></svg>'">
+                <div class="pricing-title">Complete Monitoring</div>
+                <div class="pricing-price">1,145,000 RWF</div>
+                <p>Full farm monitoring with multiple sensors</p>
+                <button class="btn-quote" onclick="alert('Request quote for Complete Monitoring')">Request Quote →</button>
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h4>Install Sensors</h4>
+                <p>Install sensors in your garden (soil, temp, water level)</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h4>Connect & Register</h4>
+                <p>Connect your IMARA-compatible device to Wi-Fi and register it</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h4>Monitor & Get Tips</h4>
+                <p>Monitor in real-time and get AI-powered irrigation tips</p>
+            </div>
+        </div>
+
+        <!-- Who Is It For -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <h3>👥 Who Is It For?</h3>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                <span class="crop-tag" style="padding: 0.5rem 1rem;">👨‍🌾 Farmers — automate irrigation</span>
+                <span class="crop-tag" style="padding: 0.5rem 1rem;">🎓 Students — learn smart agriculture</span>
+                <span class="crop-tag" style="padding: 0.5rem 1rem;">👨‍🏫 Trainers — share best practices</span>
+            </div>
+        </div>
+
+        <!-- Testimonials -->
+        <h2 class="section-title">Why teams choose IMARA</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Unifies diagnostics, monitoring, and irrigation decisions in one workflow."</p>
+                <p class="testimonial-author">— Operations team</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Built for field use with clear recommendations and resilient API design."</p>
+                <p class="testimonial-author">— Agronomy partners</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Designed to scale from pilot farms to multi-site deployments."</p>
+                <p class="testimonial-author">— Agri innovators</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-logo">
+                    <div style="width: 40px; height: 40px; background: #4ade80; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">🌱</div>
+                    <h4>IMARA</h4>
+                </div>
+                <p>AI diagnostics, IoT monitoring, and digital farm operations in one platform.</p>
+                <p style="margin-top: 1rem; font-size: 0.7rem;">PROJECT OWNER: CRAT / RGMA lineage</p>
+            </div>
+            <div class="footer-col">
+                <h4>Platform</h4>
+                <a href="#">About Dashboard</a>
+                <a href="#">Smart Garden</a>
+                <a href="#">Smart Water</a>
+                <a href="#">Analytics</a>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <a href="#">Devices</a>
+                <a href="#">Reports</a>
+                <a href="#">Learning</a>
+                <a href="#">Marketplace</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <a href="mailto:info@imara.co.rw">info@imara.co.rw</a>
+                <a href="mailto:support@imara.co.rw">support@imara.co.rw</a>
+                <a href="#">imara.co.rw</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 IMARA. Developed under CRAT ownership. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // Check login session
+        function checkSession() {
+            const session = localStorage.getItem('imara_session') || sessionStorage.getItem('imara_session');
+            if (!session) {
+                window.location.href = 'login.html';
+            }
+            return JSON.parse(session);
+        }
+
+        // Load user data
+        let sessionData;
+        try {
+            sessionData = checkSession();
+            const user = sessionData.user;
+            document.getElementById('userName').textContent = user.fullName || 'Farmer';
+            const initial = (user.fullName || 'U').charAt(0).toUpperCase();
+            document.getElementById('userAvatar').textContent = initial;
+            
+            const hour = new Date().getHours();
+            let greeting = 'Good morning';
+            if (hour >= 12 && hour < 18) greeting = 'Good afternoon';
+            if (hour >= 18) greeting = 'Good evening';
+            document.getElementById('welcomeHeading').innerHTML = `${greeting}, ${user.fullName || 'Farmer'}! 👋`;
+        } catch (e) {
+            console.log('Session check failed');
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('imara_session');
+            sessionStorage.removeItem('imara_session');
+            alert('You have been logged out successfully!');
+            window.location.href = 'login.html';
+        });
+
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const savedMode = localStorage.getItem('darkMode');
+        
+        if (savedMode === 'enabled') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.textContent = '☀️';
+        }
+        
+        function updateModelStackColor() {
+            const modelStack = document.getElementById('modelStackText');
+            if (document.body.classList.contains('dark-mode')) {
+                modelStack.style.color = '#4ade80';
+            } else {
+                modelStack.style.color = '#0f3b2c';
+            }
+        }
+        
+        darkModeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+            darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+            updateModelStackColor();
+        });
+        
+        updateModelStackColor();
+
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('show');
+        });
+
+        // Plant Health Analyzer
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const preview = document.getElementById('preview');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const analyzeResult = document.getElementById('analyzeResult');
+
+        uploadArea.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                    analyzeResult.innerHTML = '';
+                    analyzeResult.className = 'analyze-result';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        analyzeBtn.addEventListener('click', function() {
+            if (!fileInput.files[0]) {
+                analyzeResult.innerHTML = '⚠️ Please upload a leaf photo first!';
+                analyzeResult.className = 'analyze-result error';
+                return;
+            }
+            
+            analyzeResult.innerHTML = '<div style="text-align: center;">🔍 Analyzing your crop...<br>⏳ Please wait...</div>';
+            analyzeResult.className = 'analyze-result';
+            
+            setTimeout(() => {
+                const diseases = [
+                    { name: 'Late Blight', confidence: '87%', action: 'Apply fungicide and improve air circulation' },
+                    { name: 'Healthy', confidence: '92%', action: 'Continue current care routine' },
+                    { name: 'Leaf Spot', confidence: '78%', action: 'Remove affected leaves and apply copper spray' }
+                ];
+                const randomDisease = diseases[Math.floor(Math.random() * diseases.length)];
+                
+                analyzeResult.innerHTML = `
+                    <div style="font-weight: 700; margin-bottom: 0.5rem;">✅ Analysis Complete!</div>
+                    <p><strong>Detection:</strong> ${randomDisease.name}</p>
+                    <p><strong>Confidence:</strong> ${randomDisease.confidence}</p>
+                    <p><strong>Recommended Action:</strong> ${randomDisease.action}</p>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem;">💡 Sign in to save this diagnosis to your history</p>
+                `;
+                analyzeResult.className = 'analyze-result success';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

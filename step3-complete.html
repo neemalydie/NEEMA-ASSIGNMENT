@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMARA - Step 3: Complete Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }
+        }
+
+        .form-container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .form-container {
+                background: #1e1e2f;
+            }
+        }
+
+        .form-header {
+            background: #0f3b2c;
+            padding: 1.5rem 2rem;
+            color: white;
+        }
+
+        .form-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .form-header p {
+            opacity: 0.85;
+            margin-top: 0.25rem;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1rem 2rem;
+            background: #fef9e6;
+            border-bottom: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .nav-bar {
+                background: #2a2a3d;
+                border-bottom-color: #3a3a50;
+            }
+            .nav-bar a {
+                color: #e2e8f0;
+            }
+        }
+
+        .nav-bar a {
+            color: #2d3e2b;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .nav-bar a:hover {
+            text-decoration: underline;
+        }
+
+        .progress-steps {
+            display: flex;
+            padding: 1.2rem 2rem;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            gap: 1rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .progress-steps {
+                background: #1e1e2f;
+                border-bottom-color: #3a3a50;
+            }
+            .step span:not(.step-number) {
+                color: #e2e8f0;
+            }
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: #cbd5e1;
+            color: #1e293b;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .step.completed .step-number {
+            background: #10b981;
+            color: white;
+        }
+
+        .step.completed .step-number::after {
+            content: "✓";
+            font-size: 0.7rem;
+        }
+
+        .step.active .step-number {
+            background: #0f3b2c;
+            color: white;
+        }
+
+        .form-body {
+            padding: 2rem;
+        }
+
+        .success-icon {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .success-icon .circle {
+            width: 80px;
+            height: 80px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease;
+        }
+
+        .success-icon .circle svg {
+            width: 48px;
+            height: 48px;
+            stroke: white;
+            stroke-width: 2;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .ready-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            color: #0f3b2c;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .ready-title {
+                color: #e2e8f0;
+            }
+        }
+
+        .ready-description {
+            text-align: center;
+            color: #475569;
+            margin-bottom: 2rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .ready-description {
+                color: #94a3b8;
+            }
+        }
+
+        .summary-card {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .summary-card {
+                background: #2a2a3d;
+                border-color: #3a3a50;
+            }
+            .summary-title {
+                color: #e2e8f0;
+            }
+            .summary-label {
+                color: #94a3b8;
+            }
+            .summary-value {
+                color: #4ade80;
+            }
+        }
+
+        .summary-title {
+            font-weight: 700;
+            color: #0f3b2c;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .summary-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #bbf7d0;
+            font-size: 0.9rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .summary-row {
+                border-bottom-color: #3a3a50;
+            }
+        }
+
+        .summary-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .summary-value {
+            color: #0f3b2c;
+            font-weight: 500;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-back {
+            background: #e2e8f0;
+            color: #1e293b;
+            border: none;
+            flex: 1;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 3rem;
+            cursor: pointer;
+        }
+
+        .btn-back:hover {
+            background: #cbd5e1;
+        }
+
+        .btn-login {
+            background: #0f3b2c;
+            color: white;
+            border: none;
+            flex: 2;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 3rem;
+            cursor: pointer;
+        }
+
+        .btn-login:hover {
+            background: #1e4a3b;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.8rem;
+            color: #334155;
+            font-size: 0.9rem;
+        }
+
+        .login-link a {
+            color: #0f3b2c;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .login-link {
+                color: #94a3b8;
+            }
+        }
+
+        .success-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #0f3b2c;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 3rem;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+        }
+
+        .success-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Redirect countdown */
+        .redirect-message {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .countdown {
+            font-weight: 700;
+            color: #0f3b2c;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 560px) {
+            .form-body { padding: 1.5rem; }
+            .summary-row { flex-direction: column; gap: 0.25rem; }
+            .button-group { flex-direction: column; }
+            .ready-title { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <div class="form-header">
+        <h1>IMARA</h1>
+        <p>RGMA LINEAGE</p>
+    </div>
+
+    <div class="nav-bar">
+        <a href="#">Home</a>
+        <a href="#">Plant Health</a>
+        <a href="#">Overview</a>
+        <a href="#">Business</a>
+        <a href="login.html">Login</a>
+        <a href="step1-basic-info.html">Sign up</a>
+    </div>
+
+    <div class="progress-steps">
+        <div class="step completed">
+            <span class="step-number">✓</span>
+            <span>1 Basic Info</span>
+        </div>
+        <div class="step completed">
+            <span class="step-number">✓</span>
+            <span>2 Profile</span>
+        </div>
+        <div class="step active">
+            <span class="step-number">3</span>
+            <span>Complete</span>
+        </div>
+    </div>
+
+    <div class="form-body">
+        <div class="success-icon">
+            <div class="circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+        </div>
+
+        <h2 class="ready-title">Registration Complete! 🎉</h2>
+        <p class="ready-description">
+            Your IMARA account has been successfully created.<br>
+            You can now log in to access greenhouse intelligence, IoT monitoring, and AI-assisted crop diagnostics.
+        </p>
+
+        <div class="summary-card">
+            <div class="summary-title">📋 Registration Summary</div>
+            <div class="summary-details" id="summaryDetails">
+                <div class="summary-row">
+                    <span class="summary-label">Full Name:</span>
+                    <span class="summary-value" id="summaryName">—</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Phone:</span>
+                    <span class="summary-value" id="summaryPhone">—</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Email:</span>
+                    <span class="summary-value" id="summaryEmail">—</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Role:</span>
+                    <span class="summary-value" id="summaryRole">—</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Gender:</span>
+                    <span class="summary-value" id="summaryGender">—</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Location:</span>
+                    <span class="summary-value" id="summaryLocation">—</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="button" class="btn-back" id="backBtn">← Edit Profile</button>
+            <button type="button" class="btn-login" id="loginBtn">Login to Your Account →</button>
+        </div>
+
+        <div class="redirect-message" id="redirectMessage">
+            Redirecting to login page in <span class="countdown" id="countdown">5</span> seconds...
+        </div>
+
+        <div class="login-link">
+            Already have an account? <a href="login.html">Login here</a>
+        </div>
+    </div>
+</div>
+
+<div class="success-toast" id="successToast">
+    🎉 Account Created Successfully! 🎉
+</div>
+
+<script>
+    let userData = {};
+    let countdownInterval;
+    
+    window.addEventListener('DOMContentLoaded', function() {
+        const savedData = localStorage.getItem('imara_signup_data');
+        
+        if (savedData) {
+            userData = JSON.parse(savedData);
+            
+            document.getElementById('summaryName').textContent = userData.fullName || '—';
+            document.getElementById('summaryPhone').textContent = userData.phone || '—';
+            document.getElementById('summaryEmail').textContent = userData.email || '—';
+            document.getElementById('summaryRole').textContent = userData.userRole || '—';
+            document.getElementById('summaryGender').textContent = userData.gender || '—';
+            document.getElementById('summaryLocation').textContent = 
+                `${userData.province || '—'} → ${userData.district || '—'} → ${userData.sector || '—'}`;
+            
+            // Show success toast
+            const toast = document.getElementById('successToast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+            
+            // Start auto-redirect countdown
+            startCountdown();
+            
+        } else {
+            document.getElementById('summaryDetails').innerHTML = '<div style="text-align:center;color:#dc2626;">⚠️ No registration data found. Please start from <a href="step1-basic-info.html">Step 1</a>.</div>';
+            document.getElementById('redirectMessage').style.display = 'none';
+        }
+    });
+    
+    function startCountdown() {
+        let seconds = 5;
+        const countdownElement = document.getElementById('countdown');
+        
+        countdownInterval = setInterval(function() {
+            seconds--;
+            countdownElement.textContent = seconds;
+            
+            if (seconds <= 0) {
+                clearInterval(countdownInterval);
+                redirectToLogin();
+            }
+        }, 1000);
+    }
+    
+    function redirectToLogin() {
+        // Clear the registration data? No, keep it so user can login
+        // The login page will read this data
+        window.location.href = 'login.html';
+    }
+    
+    // Login button - direct redirect
+    document.getElementById('loginBtn').addEventListener('click', function() {
+        clearInterval(countdownInterval);
+        redirectToLogin();
+    });
+    
+    // Back button - go to profile edit
+    document.getElementById('backBtn').addEventListener('click', function() {
+        clearInterval(countdownInterval);
+        if (confirm('Go back to edit your profile information?')) {
+            window.location.href = 'step2-profile.html';
+        }
+    });
+    
+    // Also redirect if user clicks the login link
+    document.querySelectorAll('.login-link a, .nav-bar a[href="login.html"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            clearInterval(countdownInterval);
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>IMARA - Secure Access</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Decorative background elements */
+        body::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(15,59,44,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(15,59,44,0.03) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }
+        }
+
+        .login-container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .login-container {
+                background: #1e1e2f;
+            }
+        }
+
+        /* Left Side - Branding & Features */
+        .brand-side {
+            flex: 1;
+            background: #0f3b2c;
+            padding: 3rem;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .brand-logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-logo p {
+            opacity: 0.8;
+            margin-top: 0.25rem;
+            font-size: 0.85rem;
+        }
+
+        .brand-features {
+            margin: 3rem 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .feature-text h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-text p {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .brand-footer {
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+
+        /* Right Side - Login Form */
+        .form-side {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            margin-bottom: 2rem;
+        }
+
+        .form-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f3b2c;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .form-header h2 {
+                color: #e2e8f0;
+            }
+            .form-header p {
+                color: #94a3b8;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+            font-size: 0.85rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            label {
+                color: #e2e8f0;
+            }
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.85rem 1rem 0.85rem 2.8rem;
+            font-size: 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 1rem;
+            background-color: #ffffff !important;
+            color: #1a1a1a !important;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #0f3b2c;
+            box-shadow: 0 0 0 3px rgba(15, 59, 44, 0.15);
+        }
+
+        .input-error {
+            border-color: #dc2626 !important;
+            background-color: #fef2f2 !important;
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.7rem;
+            margin-top: 0.4rem;
+        }
+
+        /* Password toggle */
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1rem;
+            opacity: 0.6;
+        }
+
+        .password-toggle:hover {
+            opacity: 1;
+        }
+
+        /* Checkbox and forgot password row */
+        .options-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        .remember-me input {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .forgot-link {
+            color: #0f3b2c;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Login Button */
+        .login-btn {
+            background: #0f3b2c;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 3rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .login-btn:hover {
+            background: #1e4a3b;
+            transform: translateY(-1px);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn.loading {
+            opacity: 0.7;
+            cursor: wait;
+        }
+
+        .login-btn.loading .btn-text {
+            display: none;
+        }
+
+        .login-btn.loading .spinner {
+            display: inline-block;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Divider */
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            position: relative;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .divider span {
+                background: #1e1e2f;
+            }
+        }
+
+        /* Demo Button */
+        .demo-btn {
+            background: #f1f5f9;
+            border: 1.5px solid #e2e8f0;
+            width: 100%;
+            padding: 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 3rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #1e293b;
+        }
+
+        .demo-btn:hover {
+            background: #e2e8f0;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .demo-btn {
+                background: #2a2a3d;
+                border-color: #3a3a50;
+                color: #e2e8f0;
+            }
+            .demo-btn:hover {
+                background: #3a3a50;
+            }
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .register-link a {
+            color: #0f3b2c;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0f3b2c;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .login-container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+            .brand-side {
+                padding: 2rem;
+                text-align: center;
+            }
+            .feature-item {
+                justify-content: center;
+            }
+            .form-side {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-side {
+                padding: 1.5rem;
+            }
+            .options-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <!-- Left Side - Branding -->
+    <div class="brand-side">
+        <div class="brand-logo">
+            <h1>🌱 IMARA</h1>
+            <p>RGMA LINEAGE</p>
+        </div>
+
+        <div class="brand-features">
+            <div class="feature-item">
+                <div class="feature-icon">📡</div>
+                <div class="feature-text">
+                    <h4>Real-time Monitoring</h4>
+                    <p>Farm operations and device analytics</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-text">
+                    <h4>AI Disease Detection</h4>
+                    <p>Powered by advanced diagnostics</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🛠️</div>
+                <div class="feature-text">
+                    <h4>Admin Tools</h4>
+                    <p>Manage users, devices, and communications</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="brand-footer">
+            <p>🔒 Secure access for authorized users only</p>
+        </div>
+    </div>
+
+    <!-- Right Side - Login Form -->
+    <div class="form-side">
+        <div class="form-header">
+            <h2>Welcome Back</h2>
+            <p>Sign in to access your smart agriculture workspace</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Email or Phone</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">📧</span>
+                    <input type="text" id="username" placeholder="Enter your email or phone number" value="neemalydie@gmail.com">
+                </div>
+                <div class="error-message" id="usernameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="password" placeholder="Enter your password">
+                    <span class="password-toggle" id="togglePassword">👁️</span>
+                </div>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <div class="options-row">
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberMe"> Remember me
+                </label>
+                <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <button type="button" class="login-btn" id="loginBtn">
+                <span class="btn-text">Sign in</span>
+                <span class="spinner"></span>
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <button type="button" class="demo-btn" id="demoBtn">
+            🔓 Try Demo Account
+        </button>
+
+        <div class="register-link">
+            No account? <a href="step1-basic-info.html">Create an account</a>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    // Get registered user data from localStorage
+    function getRegisteredUser() {
+        const savedData = localStorage.getItem('imara_signup_data');
+        if (savedData) {
+            return JSON.parse(savedData);
+        }
+        return null;
+    }
+
+    // Demo credentials
+    const demoUser = {
+        username: "demo@imara.com",
+        phone: "0788123456",
+        password: "Demo123!"
+    };
+
+    // Show toast notification
+    function showToast(message, isError = false) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.style.background = isError ? '#dc2626' : '#0f3b2c';
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    // Toggle password visibility
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+
+    // Login function
+    document.getElementById('loginBtn').addEventListener('click', async function() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+        
+        const btn = this;
+        let isValid = true;
+        
+        // Clear previous errors
+        document.getElementById('usernameError').innerText = '';
+        document.getElementById('passwordError').innerText = '';
+        document.getElementById('username').classList.remove('input-error');
+        document.getElementById('password').classList.remove('input-error');
+        
+        // Validate
+        if (!username) {
+            document.getElementById('usernameError').innerText = 'Email or phone is required';
+            document.getElementById('username').classList.add('input-error');
+            isValid = false;
+        }
+        
+        if (!password) {
+            document.getElementById('passwordError').innerText = 'Password is required';
+            document.getElementById('password').classList.add('input-error');
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            showToast('Please fill in all fields', true);
+            return;
+        }
+        
+        // Show loading state
+        btn.classList.add('loading');
+        btn.disabled = true;
+        
+        // Simulate network delay
+        setTimeout(() => {
+            const registeredUser = getRegisteredUser();
+            let isAuthenticated = false;
+            let userForSession = null;
+            
+            // Check against registered user
+            if (registeredUser && 
+                (username === registeredUser.email || username === registeredUser.phone) && 
+                password === registeredUser.password) {
+                isAuthenticated = true;
+                userForSession = registeredUser;
+            }
+            
+            // Check against demo user
+            if (!isAuthenticated && 
+                (username === demoUser.username || username === demoUser.phone) && 
+                password === demoUser.password) {
+                isAuthenticated = true;
+                userForSession = { 
+                    fullName: "Demo Farmer", 
+                    email: demoUser.username, 
+                    phone: demoUser.phone, 
+                    userRole: "Farmer" 
+                };
+            }
+            
+            if (isAuthenticated) {
+                // Save login session
+                const session = {
+                    isLoggedIn: true,
+                    user: userForSession,
+                    loginTime: new Date().toISOString(),
+                    rememberMe: rememberMe
+                };
+                
+                if (rememberMe) {
+                    localStorage.setItem('imara_session', JSON.stringify(session));
+                } else {
+                    sessionStorage.setItem('imara_session', JSON.stringify(session));
+                }
+                
+                showToast(`✅ Welcome back, ${userForSession.fullName || 'User'}!`);
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 500);
+            } else {
+                showToast('❌ Invalid email/phone or password', true);
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        }, 800);
+    });
+    
+    // Demo account button
+    document.getElementById('demoBtn').addEventListener('click', function() {
+        document.getElementById('username').value = demoUser.username;
+        document.getElementById('password').value = demoUser.password;
+        document.getElementById('username').classList.remove('input-error');
+        document.getElementById('password').classList.remove('input-error');
+        document.getElementById('usernameError').innerText = '';
+        document.getElementById('passwordError').innerText = '';
+        showToast('🔓 Demo credentials loaded! Click Sign in.');
+    });
+    
+    // Check if already logged in
+    const existingSession = localStorage.getItem('imara_session') || sessionStorage.getItem('imara_session');
+    if (existingSession) {
+        const session = JSON.parse(existingSession);
+        if (session.isLoggedIn) {
+            setTimeout(() => {
+                if (confirm('You are already logged in. Go to dashboard?')) {
+                    window.location.href = 'dashboard.html';
+                }
+            }, 100);
+        }
+    }
+    
+    // Enter key support
+    document.getElementById('password').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            document.getElementById('loginBtn').click();
+        }
+    });
+</script>
+</body>
+</html>

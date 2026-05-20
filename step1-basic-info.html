@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMARA - Step 1: Basic Information</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }
+        }
+
+        .form-container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .form-container {
+                background: #1e1e2f;
+            }
+        }
+
+        .form-header {
+            background: #0f3b2c;
+            padding: 1.5rem 2rem;
+            color: white;
+        }
+
+        .form-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .form-header p {
+            opacity: 0.85;
+            margin-top: 0.25rem;
+        }
+
+        .progress-steps {
+            display: flex;
+            padding: 1.2rem 2rem;
+            background: #fef9e6;
+            border-bottom: 1px solid #e2e8f0;
+            gap: 1rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .progress-steps {
+                background: #2a2a3d;
+                border-bottom-color: #3a3a50;
+            }
+            .step span:not(.step-number) {
+                color: #e2e8f0;
+            }
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: #cbd5e1;
+            color: #1e293b;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .step.active .step-number {
+            background: #0f3b2c;
+            color: white;
+        }
+
+        .form-body {
+            padding: 2rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-size: 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 1rem;
+            background-color: #ffffff !important;
+            color: #1a1a1a !important;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #0f3b2c;
+            box-shadow: 0 0 0 3px rgba(15, 59, 44, 0.15);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            input, select {
+                background-color: #ffffff !important;
+                color: #1a1a1a !important;
+            }
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            label {
+                color: #e2e8f0;
+            }
+        }
+
+        .required:after {
+            content: " *";
+            color: #dc2626;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .row-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.75rem;
+            margin-top: 0.4rem;
+        }
+
+        .input-error {
+            border-color: #dc2626 !important;
+            background-color: #fef2f2 !important;
+        }
+
+        .input-success {
+            border-color: #10b981 !important;
+            background-color: #ffffff !important;
+        }
+
+        .hint-text {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 0.3rem;
+        }
+
+        .btn-continue {
+            background: #0f3b2c;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 3rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        .btn-continue:hover {
+            background: #1e4a3b;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.8rem;
+            color: #334155;
+            font-size: 0.9rem;
+        }
+
+        .login-link a {
+            color: #0f3b2c;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .login-link {
+                color: #94a3b8;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .form-body { padding: 1.5rem; }
+            .row-2col { grid-template-columns: 1fr; gap: 0; }
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <div class="form-header">
+        <h1>IMARA</h1>
+        <p>RGMA LINEAGE</p>
+    </div>
+
+    <div class="progress-steps">
+        <div class="step active">
+            <span class="step-number">1</span>
+            <span>Basic Info</span>
+        </div>
+        <div class="step">
+            <span class="step-number">2</span>
+            <span>Profile</span>
+        </div>
+        <div class="step">
+            <span class="step-number">3</span>
+            <span>Complete</span>
+        </div>
+    </div>
+
+    <div class="form-body">
+        <form id="basicInfoForm">
+            <div class="form-group">
+                <label class="required">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name">
+                <div class="error-message" id="nameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Phone Number</label>
+                <input type="tel" id="phoneNumber" placeholder="0788123456 or +250788123456">
+                <div class="error-message" id="phoneError"></div>
+                <div class="hint-text">📱 Example: 0788123456 (10 digits) or +250788123456</div>
+            </div>
+
+            <div class="form-group">
+                <label>Email (optional)</label>
+                <input type="email" id="email" placeholder="you@example.com">
+                <div class="error-message" id="emailError"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="required">I am a</label>
+                <select id="userRole">
+                    <option value="">Select your role</option>
+                    <option value="Farmer">🌾 Farmer</option>
+                    <option value="Agronomist">🌱 Agronomist</option>
+                    <option value="Cooperative">🤝 Cooperative</option>
+                    <option value="Buyer">📦 Buyer</option>
+                </select>
+                <div class="error-message" id="roleError"></div>
+            </div>
+
+            <div class="row-2col">
+                <div class="form-group">
+                    <label class="required">Password</label>
+                    <input type="password" id="password" placeholder="Create password">
+                    <div class="error-message" id="passwordError"></div>
+                    <div class="hint-text">🔒 Min 8 chars, 1 uppercase, 1 number, 1 special (!@#$%^&*)</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm password">
+                    <div class="error-message" id="confirmError"></div>
+                </div>
+            </div>
+
+            <button type="button" class="btn-continue" id="continueBtn">Continue to profile →</button>
+
+            <!-- ✅ FIXED: Login link now works! -->
+            <div class="login-link">
+                Already have an account? <a href="login.html">Login here</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function validateRwandanPhone(phoneRaw) {
+        let cleaned = phoneRaw.replace(/[\s\-\(\)]/g, '');
+        if (!cleaned) return { valid: false, error: "Phone number is required" };
+        
+        const patternPlus250 = /^\+250[0-9]{9}$/;
+        const patternStartingZero = /^0[0-9]{9}$/;
+        const patternSevenOnly = /^7[0-9]{8}$/;
+        
+        if (patternPlus250.test(cleaned)) return { valid: true, formatted: cleaned };
+        if (patternStartingZero.test(cleaned)) return { valid: true, formatted: cleaned };
+        if (patternSevenOnly.test(cleaned)) return { valid: true, formatted: '0' + cleaned };
+        
+        return { valid: false, error: "Enter 0788123456 or +250788123456" };
+    }
+
+    function validatePassword(password) {
+        if (!password) return { valid: false, error: "Password is required" };
+        if (password.length < 8) return { valid: false, error: "Password must be at least 8 characters" };
+        if (!/[A-Z]/.test(password)) return { valid: false, error: "Add at least 1 uppercase letter" };
+        if (!/[0-9]/.test(password)) return { valid: false, error: "Add at least 1 number" };
+        if (!/[!@#$%^&*]/.test(password)) return { valid: false, error: "Add at least 1 special character (!@#$%^&*)" };
+        return { valid: true, error: "" };
+    }
+
+    document.getElementById('continueBtn').addEventListener('click', function() {
+        const fullName = document.getElementById('fullName').value.trim();
+        const phone = document.getElementById('phoneNumber').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const userRole = document.getElementById('userRole').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        let isValid = true;
+
+        if (!fullName) {
+            document.getElementById('nameError').innerText = 'Full name is required';
+            document.getElementById('fullName').classList.add('input-error');
+            isValid = false;
+        } else {
+            document.getElementById('nameError').innerText = '';
+            document.getElementById('fullName').classList.remove('input-error');
+            document.getElementById('fullName').classList.add('input-success');
+        }
+
+        const phoneValidation = validateRwandanPhone(phone);
+        if (!phone || !phoneValidation.valid) {
+            document.getElementById('phoneError').innerText = phoneValidation.error || 'Phone number is required';
+            document.getElementById('phoneNumber').classList.add('input-error');
+            isValid = false;
+        } else {
+            document.getElementById('phoneError').innerText = '';
+            document.getElementById('phoneNumber').classList.remove('input-error');
+            document.getElementById('phoneNumber').classList.add('input-success');
+        }
+
+        if (!userRole) {
+            document.getElementById('roleError').innerText = 'Please select your role';
+            document.getElementById('userRole').classList.add('input-error');
+            isValid = false;
+        } else {
+            document.getElementById('roleError').innerText = '';
+            document.getElementById('userRole').classList.remove('input-error');
+            document.getElementById('userRole').classList.add('input-success');
+        }
+
+        const passwordValidation = validatePassword(password);
+        if (!password || !passwordValidation.valid) {
+            document.getElementById('passwordError').innerText = passwordValidation.error || 'Password is required';
+            document.getElementById('password').classList.add('input-error');
+            isValid = false;
+        } else {
+            document.getElementById('passwordError').innerText = '';
+            document.getElementById('password').classList.remove('input-error');
+            document.getElementById('password').classList.add('input-success');
+        }
+
+        if (!confirmPassword) {
+            document.getElementById('confirmError').innerText = 'Please confirm your password';
+            document.getElementById('confirmPassword').classList.add('input-error');
+            isValid = false;
+        } else if (password !== confirmPassword) {
+            document.getElementById('confirmError').innerText = 'Passwords do not match';
+            document.getElementById('confirmPassword').classList.add('input-error');
+            isValid = false;
+        } else {
+            document.getElementById('confirmError').innerText = '';
+            document.getElementById('confirmPassword').classList.remove('input-error');
+            document.getElementById('confirmPassword').classList.add('input-success');
+        }
+
+        if (isValid) {
+            const userData = {
+                fullName: fullName,
+                phone: phoneValidation.formatted,
+                email: email,
+                userRole: userRole,
+                password: password,
+                registrationStep: 1
+            };
+            
+            localStorage.setItem('imara_signup_data', JSON.stringify(userData));
+            alert('✓ Basic information saved! Redirecting to Step 2...');
+            window.location.href = 'step2-profile.html';
+        } else {
+            alert('❌ Please fix the errors above before continuing.');
+        }
+    });
+</script>
+</body>
+</html>
